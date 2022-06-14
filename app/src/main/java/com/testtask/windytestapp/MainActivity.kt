@@ -1,13 +1,16 @@
 package com.testtask.windytestapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,10 +21,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun initUI() {
         btn_calc_result.setOnClickListener {
-            GlobalScope.launch {
+            GlobalScope.launch(Dispatchers.Main) {
+
                 if (et_input_it.text.toString()!=""){
                     numbersFlow(et_input_it.text.toString().toInt()).sum { it }
                 } else {
+
                     Toast.makeText(applicationContext, "Пожалуйста, введите число!", Toast.LENGTH_SHORT).show()
                 }
 
